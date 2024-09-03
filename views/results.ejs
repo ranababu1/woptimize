@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Size Results</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .bg-red {
+            background-color: #c0392b !important;
+            color: white;
+        }
+        .bg-amber {
+            background-color: #f1c40f !important;
+            color: white;
+        }
+        .bg-green {
+            background-color: #2ecc71 !important;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between mb-3">
+            <h3>Image Size Results</h3>
+            <a href="/download-result?urls=<%= results.map(r => r.url).join(',') %>" class="btn btn-primary">Download Results as File</a>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>Image URL</th>
+                    <th>Size (KB)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% results.forEach(result => { %>
+                    <tr>
+                        <td colspan="3" class="font-weight-bold"><%= result.url %></td>
+                    </tr>
+                    <% result.images.forEach(image => { %>
+                        <tr class="<%= image.size > 500 ? 'bg-red' : image.size > 100 ? 'bg-amber' : 'bg-green' %>">
+                            <td></td>
+                            <td><%= image.url %></td>
+                            <td><%= image.size === -1 ? 'Error' : image.size %> KB</td>
+                        </tr>
+                    <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
