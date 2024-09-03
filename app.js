@@ -123,7 +123,9 @@ app.get('/download-result', async (req, res) => {
   // Generate slug from the first URL
   const urlSlug = slugify(urls[0], { lower: true, strict: true });
   const fileName = `${urlSlug}-image-size-results.txt`;
-  const filePath = path.join(__dirname, 'public', fileName);
+
+  // Use /tmp directory for storing the file
+  const filePath = path.join('/tmp', fileName);
 
   // Write the content to the file
   fs.writeFile(filePath, resultContent, (err) => {
@@ -140,6 +142,7 @@ app.get('/download-result', async (req, res) => {
     }
   });
 });
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
