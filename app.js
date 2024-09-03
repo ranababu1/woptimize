@@ -10,7 +10,16 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('public')); // Serve static files from the 'public' folder
+
+// Set the view engine to EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Serve the homepage
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 function extractBackgroundImages(cssText) {
   const ast = css.parse(cssText);
@@ -41,7 +50,6 @@ async function getImageSizes(url) {
     const $ = cheerio.load(response.data);
     let images = $('img').map((i, el) => $(el).attr('src')).get();
 
-    // Extract inline style background images
     $('[style]').each((i, el) => {
       const style = $(el).attr('style');
       const matches = style.match(/url\(['"]?(.+?)['"]?\)/g);
@@ -53,10 +61,8 @@ async function getImageSizes(url) {
       }
     });
 
-    // Extract CSS file URLs
     const cssUrls = $('link[rel="stylesheet"]').map((i, el) => $(el).attr('href')).get();
 
-    // Fetch and parse CSS files
     for (const cssUrl of cssUrls) {
       try {
         const fullCssUrl = new URL(cssUrl, url).href;
@@ -68,7 +74,6 @@ async function getImageSizes(url) {
       }
     }
 
-    // Remove duplicates and resolve relative URLs
     images = [...new Set(images)].map(img => new URL(img, url).href);
 
     const results = await Promise.all(images.map(async (imgUrl) => {
@@ -82,7 +87,6 @@ async function getImageSizes(url) {
       }
     }));
 
-    // Sort results by size, largest first
     results.sort((a, b) => b.size - a.size);
     
     return results;
@@ -136,9 +140,6 @@ app.get('/download-result', async (req, res) => {
     }
   });
 });
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
