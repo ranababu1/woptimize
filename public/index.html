@@ -1,103 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Image Size Checker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #2c3e50; /* Updated to match the loader background */
-            font-family: Arial, sans-serif;
+      body {
+        background-color: #2c3e50; /* Updated to match the loader background */
+        font-family: Ubuntu, sans-serif;
+    }
+      .masthead {
+        background-color: #2c3e50; /* Updated masthead color */
+        color: white;
+      }
+      .btn-custom {
+        background-color: #2c3e50; /* Updated button color to match background */
+        color: white;
+        border-color: #2c3e50;
+      }
+      .btn-custom:hover {
+        background-color: #1a252f; /* Darker shade for hover effect */
+        border-color: #1a252f;
+        color: white;
+      }
+      .loader {
+        width: 180px;
+        height: 140px;
+        display: none; /* Initially hidden */
+        margin: 100px auto 20px;
+        background-image: radial-gradient(
+            circle 25px at 25px 25px,
+            #fff 100%,
+            transparent 0
+          ),
+          radial-gradient(circle 50px at 50px 50px, #fff 100%, transparent 0),
+          radial-gradient(circle 25px at 25px 25px, #fff 100%, transparent 0),
+          radial-gradient(circle 15px at 15px 15px, #fff 100%, transparent 0),
+          linear-gradient(#fff 50px, transparent 0);
+        background-size: 50px 50px, 100px 75px, 50px 50px, 30px 32px, 136px 20px;
+        background-repeat: no-repeat;
+        background-position: 0px 30px, 30px 0px, 113px 29px, 147px 50px,
+          23px 60px;
+        position: relative;
+        box-sizing: border-box;
+      }
+      .loader::after {
+        content: "";
+        position: absolute;
+        left: 2px;
+        top: 65px;
+        width: 2px;
+        height: 6px;
+        color: #fff;
+        box-sizing: border-box;
+        animation: animloader 0.6s linear infinite;
+      }
+      @keyframes animloader {
+        0% {
+          box-shadow: 25px 0 white, 50px 0 white, 75px 0 white, 100px 0 white,
+            125px 0 white, 150px 0 white, 25px 0 white, 50px 0 white,
+            75px 0 white, 100px 0 white, 125px 0 white, 150px 0 white;
         }
-        .masthead {
-            background-color: #2c3e50; /* Updated masthead color */
-            color: white;
+        50% {
+          box-shadow: 25px 20px white, 50px 60px rgba(255, 255, 255, 0),
+            75px 30px rgba(255, 255, 255, 0), 100px 70px rgba(255, 255, 255, 0),
+            125px 40px white, 150px 60px rgba(255, 255, 255, 0), 25px 20px white,
+            50px 30px white, 75px 10px white, 100px 30px white,
+            125px 30px rgba(255, 255, 255, 0), 150px 30px rgba(255, 255, 255, 0);
         }
-        .loader {
-            width: 180px;
-            height: 140px;
-            display: none; /* Initially hidden */
-            margin: 100px auto 20px;
-            background-image: radial-gradient(circle 25px at 25px 25px, #FFF 100%, transparent 0), radial-gradient(circle 50px at 50px 50px, #FFF 100%, transparent 0), radial-gradient(circle 25px at 25px 25px, #FFF 100%, transparent 0), radial-gradient(circle 15px at 15px 15px, #FFF 100%, transparent 0), linear-gradient(#FFF 50px, transparent 0);
-            background-size: 50px 50px, 100px 75px, 50px 50px, 30px 32px, 136px 20px;
-            background-repeat: no-repeat;
-            background-position: 0px 30px, 30px 0px, 113px 29px, 147px 50px, 23px 60px;
-            position: relative;
-            box-sizing: border-box;
+        100% {
+          box-shadow: 25px 60px rgba(255, 255, 255, 0),
+            50px 60px rgba(255, 255, 255, 0), 75px 50px rgba(255, 255, 255, 0),
+            100px 70px rgba(255, 255, 255, 0), 125px 70px rgba(255, 255, 255, 0),
+            150px 60px rgba(255, 255, 255, 0), 25px 80px rgba(255, 255, 255, 0),
+            50px 80px rgba(255, 255, 255, 0), 75px 70px rgba(255, 255, 255, 0),
+            100px 60px rgba(255, 255, 255, 0), 125px 30px rgba(255, 255, 255, 0),
+            150px 30px rgba(255, 255, 255, 0);
         }
-        .loader::after {
-            content: '';  
-            position: absolute;
-            left: 2px;
-            top: 65px;
-            width: 2px;
-            height: 6px;
-            color: #FFF;
-            box-sizing: border-box;
-            animation: animloader 0.6s linear infinite;
+      }
+      .dots {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        margin-left: 0.2em;
+        border-radius: 50%;
+        background-color: white;
+        animation: blink 1.4s infinite both;
+      }
+      .dots:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .dots:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes blink {
+        0%,
+        80%,
+        100% {
+          opacity: 0;
         }
-        @keyframes animloader {
-            0% {
-                box-shadow: 25px 0 white, 50px 0 white, 75px 0 white, 100px 0 white, 125px 0 white, 150px 0 white, 25px 0 white, 50px 0 white, 75px 0 white, 100px 0 white, 125px 0 white, 150px 0 white;
-            }
-            50% {
-                box-shadow: 25px 20px white, 50px 60px rgba(255, 255, 255, 0), 75px 30px rgba(255, 255, 255, 0), 100px 70px rgba(255, 255, 255, 0), 125px 40px white, 150px 60px rgba(255, 255, 255, 0), 25px 20px white, 50px 30px white, 75px 10px white, 100px 30px white, 125px 30px rgba(255, 255, 255, 0), 150px 30px rgba(255, 255, 255, 0);
-            }
-            100% {
-                box-shadow: 25px 60px rgba(255, 255, 255, 0), 50px 60px rgba(255, 255, 255, 0), 75px 50px rgba(255, 255, 255, 0), 100px 70px rgba(255, 255, 255, 0), 125px 70px rgba(255, 255, 255, 0), 150px 60px rgba(255, 255, 255, 0), 25px 80px rgba(255, 255, 255, 0), 50px 80px rgba(255, 255, 255, 0), 75px 70px rgba(255, 255, 255, 0), 100px 60px rgba(255, 255, 255, 0), 125px 30px rgba(255, 255, 255, 0), 150px 30px rgba(255, 255, 255, 0);
-            }
+        40% {
+          opacity: 1;
         }
+      }
+
+      .pdt-20 {
+        padding-top: 20px;
+      }
+      .fs-1-5rm {
+        font-size: 1.5rem;
+      }
+
+      .gradyText {
+        background-image: linear-gradient(120deg, #1cdce8, #bb77ed, #f34a62);
+        background-size: 200%;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-animation: chorki 3s ease-in-out infinite;
+        animation: chorki 3s ease-in-out infinite;
+      }
+
+      .fw700{
+        font-weight: 700;
+      }
+
+      @-webkit-keyframes chorki {
+        0%,
+        to {
+          background-position: 0 50%;
+        }
+
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      @keyframes chorki {
+        0%,
+        to {
+          background-position: 0 50%;
+        }
+
+        50% {
+          background-position: 100% 50%;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header class="masthead text-center py-5">
-        <h1 class="display-4">Image Size Checker</h1>
-        <p class="lead">Check image sizes from given URLs and download the results as a text file.</p>
+      <h1 class="display-3 gradyText fw700">Image Size Checker</h1>
+      <p id="subtext" class="lead pdt-20 fs-1-5rm gradyText">
+        Check image sizes from given URLs and download the results as a text
+        file.
+      </p>
     </header>
 
     <div class="container mt-4">
-        <div class="card card-container">
-            <div class="card-body">
-                <h5 class="card-title">Enter URLs</h5>
-                <textarea id="urls" class="form-control mb-3" rows="10" placeholder="Enter URLs, one per line"></textarea>
-                <button class="btn btn-primary" onclick="checkImages()">Check Images</button>
-            </div>
+      <div class="card card-container">
+        <div class="card-body">
+          <h5 class="card-title">Enter URLs</h5>
+          <textarea
+            id="urls"
+            class="form-control mb-3"
+            rows="10"
+            placeholder="Enter URLs, one per line"
+          ></textarea>
+          <button class="btn btn-custom" onclick="checkImages()" required>
+            Crawl Site
+          </button>
         </div>
-        <div id="result" class="text-center">
-            <span class="loader"></span> <!-- Loader is placed here -->
-        </div>
+      </div>
+      <div id="result" class="text-center">
+        <span class="loader"></span>
+      </div>
     </div>
 
     <script>
-        async function checkImages() {
-            const urls = document.getElementById('urls').value.split('\n').filter(url => url.trim() !== '');
-            document.querySelector('.card-container').style.display = 'none'; // Hide the input form
-            document.querySelector('.loader').style.display = 'block'; // Show the loader
-            
-            try {
-                const response = await fetch('/check-images', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ urls }),
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const resultHTML = await response.text();
-                document.open();
-                document.write(resultHTML);
-                document.close();
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('result').innerHTML = `<p>Error: ${error.message}</p>`;
-            }
+      async function checkImages() {
+        const urls = document
+          .getElementById("urls")
+          .value.split("\n")
+          .filter((url) => url.trim() !== "");
+        if (urls.length === 0) {
+          return; 
         }
+        document.querySelector(".card-container").style.display = "none"; // Hide the input form
+        document.querySelector(".loader").style.display = "block"; // Show the loader
+
+        // Change the subtext and add animated dots
+        document.getElementById("subtext").innerHTML =
+          'Crawling your provided URLs and fetching the metadata<span class="dots"></span><span class="dots"></span><span class="dots"></span>';
+
+        try {
+          const response = await fetch("/check-images", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ urls }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const resultHTML = await response.text();
+
+          // Delay the screen change by 3 seconds
+          setTimeout(() => {
+            document.open();
+            document.write(resultHTML);
+            document.close();
+          }, 5000); // 3-second delay
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById(
+            "result"
+          ).innerHTML = `<p>Error: ${error.message}</p>`;
+        }
+      }
     </script>
-</body>
+  </body>
 </html>
