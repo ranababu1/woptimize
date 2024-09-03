@@ -1,6 +1,6 @@
 # Woptimizer
 
-Woptimizer fetches all the image URLs from a given webpage/s, determines their sizes, and displays the results in a tabular format. It also allows users to download the results as a txt file.
+Website image optimizer fetches all the image URLs from a given webpage/s, determines their sizes, and displays the results in a tabular format. It also allows users to download the results as a txt file.
 
 ## Features
 
