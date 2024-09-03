@@ -6,6 +6,23 @@
     <title>Image Size Results</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .table {
+            background-color: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .table thead th {
+            background-color: #343a40;
+            color: white;
+        }
         .bg-red {
             background-color: #c0392b !important;
             color: white;
@@ -18,37 +35,72 @@
             background-color: #2ecc71 !important;
             color: white;
         }
+        .url-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+        }
+        .result-table-container {
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .download-btn {
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+        .back-btn {
+            background-color: #6c757d;
+            color: white;
+            border-radius: 5px;
+        }
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+        .header-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between mb-3">
-            <h3>Image Size Results</h3>
-            <a href="/download-result?urls=<%= results.map(r => r.url).join(',') %>" class="btn btn-primary">Download Results as File</a>
+    <div class="container">
+        <div class="header-buttons">
+            <a href="/" class="btn back-btn">Back to Home</a>
+            <a href="/download-result?urls=<%= results.map(r => r.url).join(',') %>" class="btn download-btn">Download Results as File</a>
         </div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>URL</th>
-                    <th>Image URL</th>
-                    <th>Size (KB)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% results.forEach(result => { %>
-                    <tr>
-                        <td colspan="3" class="font-weight-bold"><%= result.url %></td>
-                    </tr>
-                    <% result.images.forEach(image => { %>
-                        <tr class="<%= image.size > 500 ? 'bg-red' : image.size > 100 ? 'bg-amber' : 'bg-green' %>">
-                            <td></td>
-                            <td><%= image.url %></td>
-                            <td><%= image.size === -1 ? 'Error' : image.size %> KB</td>
+
+        <% results.forEach(result => { %>
+            <div class="result-table-container mb-4">
+                <div class="url-header">
+                    <%= result.url %>
+                </div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image URL</th>
+                            <th>Size (KB)</th>
                         </tr>
-                    <% }); %>
-                <% }); %>
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                        <% result.images.forEach((image, index) => { %>
+                            <tr class="<%= image.size > 500 ? 'bg-red' : image.size > 100 ? 'bg-amber' : 'bg-green' %>">
+                                <td><%= index + 1 %></td>
+                                <td><%= image.url %></td>
+                                <td><%= image.size === -1 ? 'Error' : image.size %> KB</td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        <% }); %>
     </div>
 </body>
 </html>
