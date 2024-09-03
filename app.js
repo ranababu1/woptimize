@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const css = require('css');
 const path = require('path');
 const fs = require('fs');
+const slugify = require('slugify');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -104,7 +105,6 @@ app.post('/check-images', async (req, res) => {
   res.render('results', { results });
 });
 
-
 app.get('/download-result', async (req, res) => {
   const urls = req.query.urls.split(',');
   const results = [];
@@ -115,7 +115,11 @@ app.get('/download-result', async (req, res) => {
   }
 
   const resultContent = results.join('\n');
-  const filePath = path.join(__dirname, 'public', 'image_sizes.txt');
+  
+  // Generate slug from the first URL
+  const urlSlug = slugify(urls[0], { lower: true, strict: true });
+  const fileName = `${urlSlug}-image-size-results.txt`;
+  const filePath = path.join(__dirname, 'public', fileName);
 
   // Write the content to the file
   fs.writeFile(filePath, resultContent, (err) => {
@@ -124,7 +128,7 @@ app.get('/download-result', async (req, res) => {
       res.status(500).send('Error generating file');
     } else {
       // Once the file is written, send it for download
-      res.download(filePath, 'image_sizes.txt', (err) => {
+      res.download(filePath, fileName, (err) => {
         if (err) {
           console.error('Error downloading the file:', err.message);
         }
@@ -132,7 +136,6 @@ app.get('/download-result', async (req, res) => {
     }
   });
 });
-
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
