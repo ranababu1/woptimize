@@ -79,7 +79,7 @@
             background-color: white;
         }
     </style>
-    
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <div class="">
@@ -103,32 +103,55 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% result.images.forEach((image, index) => { 
-                            const fileType = image.url.split('.').pop().toLowerCase();
-                            let fileTypeDisplay = '';
-                        
-                            if (fileType === 'webp') {
-                                fileTypeDisplay = 'WebP 😍';
-                            } else if (fileType === 'jpg' || fileType === 'jpeg') {
-                                fileTypeDisplay = fileType.toUpperCase() + ' 😐';
-                            } else if (fileType === 'png' || fileType === 'svg') {
-                                fileTypeDisplay = fileType.toUpperCase() + ' 😡';
-                            } else {
+                        <tbody>
+                            <% result.images.forEach((image, index) => { 
+                              const fileType = image.url.split('.').pop().toLowerCase();
+                              let fileTypeDisplay = '';
+                          
+                              // Determine the file type display with smiley first
+                              if (fileType === 'webp') {
+                                fileTypeDisplay = '😍 WebP';
+                              } else if (fileType === 'jpg' || fileType === 'jpeg') {
+                                fileTypeDisplay = '😐 ' + fileType.toUpperCase();
+                              } else if (fileType === 'png' || fileType === 'svg') {
+                                fileTypeDisplay = '😡 ' + fileType.toUpperCase();
+                              } else {
                                 fileTypeDisplay = '😲'; // Default smiley for unknown file types
-                            }
-                        %>
-                            <tr class="<%= image.size > 500 ? 'bg-red' : image.size > 100 ? 'bg-amber' : 'bg-green' %>">
+                              }
+                          
+                              // Determine the file size display
+                              let sizeDisplay = '';
+                              if (image.size >= 1024) {
+                                sizeDisplay = (image.size / 1024).toFixed(2) + ' MB'; // Convert KB to MB if >= 1024KB
+                              } else if (image.size <= 1) {
+                                sizeDisplay = '1 KB'; // Show 1KB for any size <= 1KB
+                              } else {
+                                sizeDisplay = image.size.toFixed(2) + ' KB'; // Display in KB
+                              }
+                            %>
+                              <tr class="<%= image.size > 500 ? 'bg-red' : image.size > 100 ? 'bg-amber' : 'bg-green' %>">
                                 <td><%= index + 1 %></td>
                                 <td><%= image.url %></td>
-                                <td><%= image.size === -1 ? 'Error' : image.size %> KB</td>
-                                <td><%= fileTypeDisplay %></td> <!-- Display the file type or a smiley -->
-                            </tr>
-                        <% }); %>
-                    </tbody>
+                                <td><%= sizeDisplay %></td> <!-- Display size dynamically -->
+                                <td><%= fileTypeDisplay %></td> <!-- Smiley followed by file type -->
+                              </tr>
+                            <% }); %>
+                          </tbody>
+                          
+                          
+                      
                 </table>
             </div>
         <% }); %>
     </div>
     </div>
+    <script>
+        $(document).ready(function () {
+          $("table tbody tr").hide();
+          $("table tbody tr").each(function (index) {
+            $(this).delay(index * 200).fadeIn(300);
+          });
+        });
+      </script>
   </body>
 </html>
