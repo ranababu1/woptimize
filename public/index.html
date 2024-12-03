@@ -204,7 +204,7 @@
       <h1 class="display-3 gradyText fw700">Website Metadata Crawler</h1>
       <p id="subtext" class="lead pdt-20 fs-1-5rm gradyText">
         Check image metadata from given URLs and download the results as text
-        file.
+        file. </br> To audit and <a href="https://optimize.best/">optimize</a> the assets
       </p>
     </header>
 
@@ -239,10 +239,9 @@
         if (urls.length === 0) {
           return; 
         }
-        document.querySelector(".card-container").style.display = "none"; // Hide the input form
-        document.querySelector(".loader").style.display = "block"; // Show the loader
+        document.querySelector(".card-container").style.display = "none";
+        document.querySelector(".loader").style.display = "block"; 
 
-        // Change the subtext and add animated dots
         document.getElementById("subtext").innerHTML =
           'Crawling your provided URLs and fetching the metadata<span class="dots"></span><span class="dots"></span><span class="dots"></span>';
 
